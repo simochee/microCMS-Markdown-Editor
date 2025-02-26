@@ -3,7 +3,8 @@
     "private": true,
     "license": "MIT",
     "scripts": {
-        "dev": "vite"
+        "dev": "wrangler pages dev --live-reload",
+        "build": "vite build"
     },
     "devDependencies": {
         "@tsconfig/vite-react": "^3.4.0",
@@ -11,7 +12,8 @@
         "@types/react-dom": "^19.0.4",
         "@vitejs/plugin-react": "^4.3.4",
         "vite": "^6.2.0",
-        "vite-tsconfig-paths": "^5.1.4"
+        "vite-tsconfig-paths": "^5.1.4",
+        "wrangler": "^3.110.0"
     },
     "dependencies": {
         "react": "^19.0.0",

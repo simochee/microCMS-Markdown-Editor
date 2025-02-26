@@ -1,4 +1,5 @@
 dist/
 node_modules/
+.wrangler/
 *.local
 .DS_Store
