@@ -16,6 +16,7 @@
         "wrangler": "^3.110.0"
     },
     "dependencies": {
+        "hono": "^4.7.2",
         "react": "^19.0.0",
         "react-dom": "^19.0.0"
     }
