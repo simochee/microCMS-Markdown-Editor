@@ -12,6 +12,7 @@
 		"react-dom": "^19.0.0"
 	},
 	"devDependencies": {
+		"@tailwindcss/vite": "^4.0.9",
 		"@trivago/prettier-plugin-sort-imports": "^5.2.2",
 		"@tsconfig/vite-react": "^3.4.0",
 		"@types/react": "^19.0.10",
@@ -20,6 +21,8 @@
 		"lefthook": "^1.11.2",
 		"prettier": "^3.5.2",
 		"prettier-plugin-packagejson": "^2.5.8",
+		"prettier-plugin-tailwindcss": "^0.6.11",
+		"tailwindcss": "^4.0.9",
 		"vite": "^6.2.0",
 		"vite-tsconfig-paths": "^5.1.4",
 		"wrangler": "^3.110.0"
