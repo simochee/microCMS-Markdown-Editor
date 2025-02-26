@@ -3,7 +3,7 @@
     "private": true,
     "license": "MIT",
     "scripts": {
-        "dev": "wrangler pages dev --live-reload",
+        "dev": "wrangler pages dev --local --compatibility-date=2025-02-26 -- vite",
         "build": "vite build"
     },
     "devDependencies": {

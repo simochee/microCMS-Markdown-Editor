@@ -15,8 +15,6 @@ app.post('/api/gyazo/images', async (c) => {
     const blob = await c.req.blob();
     const form = new FormData();
 
-    console.log(c.env.GYAZO_ACCESS_TOKEN, c.env.GYAZO_COLLECTION_ID)
-
     form.append('access_token', c.env.GYAZO_ACCESS_TOKEN);
     form.append('collection_id', c.env.GYAZO_COLLECTION_ID);
     form.append('imagedata', blob, 'image.png');
