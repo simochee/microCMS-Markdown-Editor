@@ -7,10 +7,15 @@
 		"dev": "wrangler pages dev --local --compatibility-date=2025-02-26 -- vite"
 	},
 	"dependencies": {
+		"@catppuccin/vscode": "^3.16.1",
+		"@fontsource/ibm-plex-mono": "^5.1.1",
+		"@fontsource/ibm-plex-sans-jp": "^5.1.1",
+		"@monaco-editor/react": "^4.7.0",
 		"@tanstack/react-router": "^1.111.11",
 		"hono": "^4.7.2",
 		"react": "^19.0.0",
-		"react-dom": "^19.0.0"
+		"react-dom": "^19.0.0",
+		"react-use": "^17.6.0"
 	},
 	"devDependencies": {
 		"@tailwindcss/vite": "^4.0.9",
