@@ -1,9 +1,6 @@
 import "@fontsource/ibm-plex-mono/400.css";
 import { createFileRoute } from "@tanstack/react-router";
-import {
-	sendFieldExtensionMessage,
-	setupFieldExtension,
-} from "microcms-field-extension-api";
+import { setupFieldExtension } from "microcms-field-extension-api";
 import { useEffect, useState } from "react";
 import { useMeasure } from "react-use";
 import { Editor } from "~/components/Editor";
@@ -30,7 +27,7 @@ export const Route = createFileRoute("/")({
 		useEffect(() => {
 			if (!fieldId) return;
 
-			sendFieldExtensionMessage(
+			window.parent.postMessage(
 				{
 					id: fieldId,
 					action: "MICROCMS_UPDATE_STYLE",
