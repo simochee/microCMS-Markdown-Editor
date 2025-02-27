@@ -5,10 +5,13 @@ import {
 import { useEffect, useState } from "react";
 
 const ORIGIN = import.meta.env.VITE_MICROCMS_ORIGIN || "*";
+const isInIframe = window.self !== window.top;
 
 export const useFieldExtension = () => {
 	const [id, setId] = useState<string>();
-	const [initialValue, setInitialValue] = useState<string | null>(null);
+	const [initialValue, setInitialValue] = useState<string | null>(
+		isInIframe ? null : "",
+	);
 
 	useEffect(
 		() =>

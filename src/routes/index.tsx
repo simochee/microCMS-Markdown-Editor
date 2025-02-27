@@ -2,7 +2,7 @@ import "@fontsource/ibm-plex-mono/400.css";
 import type { OnChange, OnMount } from "@monaco-editor/react";
 import { createFileRoute } from "@tanstack/react-router";
 import type { Position } from "monaco-editor";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMeasure } from "react-use";
 import { Editor } from "~/components/Editor";
 import { EditorFooter } from "~/components/EditorFooter";
@@ -18,7 +18,9 @@ export const Route = createFileRoute("/")({
 		const [minimap, setMinimap] = useState(false);
 		const [position, setPosition] = useState<Position | null>(null);
 		const [selectedLength, setSelectedLength] = useState<number | null>(null);
-		const [content, setContent] = useState<string>("");
+		const [content, setContent] = useState("");
+
+		const windowRef = useRef<Window | null>(null);
 
 		const handleMount: OnMount = (editor, _monaco) => {
 			// カーソル位置を取得
@@ -48,6 +50,32 @@ export const Route = createFileRoute("/")({
 			sendValue(value);
 		};
 
+		const handlePreview = () => {
+			if (!windowRef.current || windowRef.current.closed) {
+				windowRef.current = window.open("/preview", "_blank");
+				window.addEventListener("message", (e) => {
+					if (
+						e.origin !== location.origin ||
+						e.data.action !== "REQUEST:PREVEW_CONTENT"
+					)
+						return;
+
+					console.log(e.data, { action: "PREVIEW_CONTENT", content });
+
+					windowRef.current?.postMessage(
+						{ action: "RESPONSE:PREVEW_CONTENT", content },
+						location.origin,
+					);
+				});
+			} else {
+				windowRef.current.focus();
+				windowRef.current.postMessage(
+					{ action: "RESPONSE:PREVEW_CONTENT", content },
+					location.origin,
+				);
+			}
+		};
+
 		useEffect(() => {
 			updateStyle("100%", height);
 		}, [height, updateStyle]);
@@ -71,6 +99,7 @@ export const Route = createFileRoute("/")({
 					lineNumber={position?.lineNumber ?? 1}
 					selectedLength={selectedLength}
 					content={content}
+					onPreview={handlePreview}
 				/>
 			</div>
 		);

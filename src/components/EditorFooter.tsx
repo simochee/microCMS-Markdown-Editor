@@ -35,6 +35,7 @@ type Props = {
 	lineNumber: number;
 	selectedLength: number | null;
 	content: string;
+	onPreview: () => void;
 };
 
 export const EditorFooter: React.FC<Props> = ({
@@ -42,12 +43,13 @@ export const EditorFooter: React.FC<Props> = ({
 	lineNumber,
 	selectedLength,
 	content,
+	onPreview,
 }) => {
 	return (
 		<footer className="bg-editor-commandCenter-background">
 			<div className="flex justify-between pr-3">
 				<nav className="flex gap-2">
-					<StatusBarItem icon={VscPreview} accent>
+					<StatusBarItem icon={VscPreview} accent onClick={onPreview}>
 						記事をプレビュー
 					</StatusBarItem>
 				</nav>
