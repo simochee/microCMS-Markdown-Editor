@@ -7,12 +7,15 @@
 		"dev": "wrangler pages dev --local --compatibility-date=2025-02-26 -- vite"
 	},
 	"dependencies": {
+		"@tanstack/react-router": "^1.111.11",
 		"hono": "^4.7.2",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0"
 	},
 	"devDependencies": {
 		"@tailwindcss/vite": "^4.0.9",
+		"@tanstack/router-devtools": "^1.111.11",
+		"@tanstack/router-plugin": "^1.111.12",
 		"@trivago/prettier-plugin-sort-imports": "^5.2.2",
 		"@tsconfig/vite-react": "^3.4.0",
 		"@types/react": "^19.0.10",
