@@ -1,31 +1,31 @@
-import MonacoEditor, { type BeforeMount } from "@monaco-editor/react";
-import { useSize } from "react-use";
-import { defineTheme, THEME_NAME } from "~/utils/editor";
+import MonacoEditor, { type OnMount } from "@monaco-editor/react";
+import { shikiToMonaco } from "@shikijs/monaco";
+import { getSingletonHighlighter } from "shiki/bundle/web";
 
 type Props = {
 	minimap: boolean;
 };
 
 export const Monaco: React.FC<Props> = ({ minimap }) => {
-	const handleBeforeMount: BeforeMount = (monaco) => {
-		defineTheme(monaco);
+	const handleMount: OnMount = async (_editor, monaco) => {
+		const highlighter = await getSingletonHighlighter({
+			themes: ["catppuccin-latte"],
+			langs: ["markdown"],
+		});
+
+		shikiToMonaco(highlighter, monaco);
 	};
 
-	const [sized] = useSize(({ width, height }) => (
-		<div className="w-full h-full">
-			<MonacoEditor
-				width={width}
-				height={height}
-				language="markdown"
-				theme={THEME_NAME}
-				options={{
-					fontFamily: "IBM Plex Mono, IBM Plex Sans JP, monospace",
-					minimap: { enabled: minimap },
-				}}
-				beforeMount={handleBeforeMount}
-			/>
-		</div>
-	));
-
-	return sized;
+	return (
+		<MonacoEditor
+			height={700}
+			language="markdown"
+			theme="vs"
+			options={{
+				fontFamily: "IBM Plex Mono, IBM Plex Sans JP, monospace",
+				minimap: { enabled: minimap },
+			}}
+			onMount={handleMount}
+		/>
+	);
 };
