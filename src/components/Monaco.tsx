@@ -9,7 +9,7 @@ type Props = {
 export const Monaco: React.FC<Props> = ({ minimap }) => {
 	const handleBeforeMount: BeforeMount = (monaco) => {
 		const rules = latte.tokenColors.flatMap(({ scope, settings }) => {
-			const scopes = Array.isArray(scope) ? scope : [scope];
+			const scopes = Array.isArray(scope) ? scope : scope.split(",");
 
 			return scopes.map((token) => ({
 				token,
