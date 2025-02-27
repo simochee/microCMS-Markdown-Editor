@@ -1,3 +1,4 @@
+import { EditorFooter } from "./EditorFooter";
 import { EditorHeader } from "./EditorHeader";
 import { Monaco } from "./Monaco";
 import { useState } from "react";
@@ -9,7 +10,7 @@ export const Editor = () => {
 		<div className="grid grid-rows-[auto_1fr_auto] font-mono">
 			<EditorHeader minimap={minimap} onChangeMinimap={setMinimap} />
 			<Monaco minimap={minimap} />
-			<footer className="bg-editor-statusBar-background">Footer</footer>
+			<EditorFooter />
 		</div>
 	);
 };

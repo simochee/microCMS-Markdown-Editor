@@ -2,6 +2,7 @@ import {
 	VscMarkdown,
 	VscMapVertical,
 	VscMapVerticalFilled,
+	VscMenu,
 } from "react-icons/vsc";
 
 type Props = {
@@ -18,7 +19,7 @@ export const EditorHeader: React.FC<Props> = ({ minimap, onChangeMinimap }) => {
 				<VscMarkdown className="text-xl" />
 				article.md
 			</p>
-			<div className="ml-auto">
+			<nav className="ml-auto flex gap-1">
 				<button
 					type="button"
 					className="size-6 rounded grid place-items-center bg-editor-commandCenter-background hover:bg-editor-commandCenter-activeBackground text-editor-commandCenter-foreground"
@@ -26,7 +27,13 @@ export const EditorHeader: React.FC<Props> = ({ minimap, onChangeMinimap }) => {
 				>
 					<MinimapIcon />
 				</button>
-			</div>
+				<button
+					type="button"
+					className="size-6 rounded grid place-items-center bg-editor-commandCenter-background hover:bg-editor-commandCenter-activeBackground text-editor-commandCenter-foreground"
+				>
+					<VscMenu />
+				</button>
+			</nav>
 		</header>
 	);
 };
