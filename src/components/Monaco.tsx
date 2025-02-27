@@ -1,4 +1,7 @@
-import MonacoEditor, { type OnMount } from "@monaco-editor/react";
+import MonacoEditor, {
+	type OnChange,
+	type OnMount,
+} from "@monaco-editor/react";
 import { shikiToMonaco } from "@shikijs/monaco";
 import type { editor } from "monaco-editor";
 import { useEffect, useRef } from "react";
@@ -9,6 +12,7 @@ type Props = {
 	minimap: boolean;
 	readOnly: boolean;
 	onMount: OnMount;
+	onChange: OnChange;
 };
 
 export const Monaco: React.FC<Props> = ({
@@ -16,6 +20,7 @@ export const Monaco: React.FC<Props> = ({
 	minimap,
 	readOnly,
 	onMount,
+	onChange,
 }) => {
 	const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
@@ -63,6 +68,7 @@ export const Monaco: React.FC<Props> = ({
 				minimap: { enabled: minimap },
 			}}
 			onMount={handleMount}
+			onChange={onChange}
 		/>
 	);
 };

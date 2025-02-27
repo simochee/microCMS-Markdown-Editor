@@ -1,9 +1,11 @@
 import { EditorFooter } from "./EditorFooter";
 import { EditorHeader } from "./EditorHeader";
 import { Monaco } from "./Monaco";
-import type { OnMount } from "@monaco-editor/react";
+import type { OnChange, OnMount } from "@monaco-editor/react";
+import { sendFieldExtensionMessage } from "microcms-field-extension-api";
 import type { Position } from "monaco-editor";
 import { useState } from "react";
+import { useFieldId } from "~/hooks/useFieldId";
 
 type Props = {
 	initialValue: string | null;
@@ -14,6 +16,7 @@ export const Editor: React.FC<Props> = ({ initialValue }) => {
 	const [position, setPosition] = useState<Position | null>(null);
 	const [selectedLength, setSelectedLength] = useState<number | null>(null);
 	const [content, setContent] = useState<string>("");
+	const fieldId = useFieldId();
 
 	const handleMount: OnMount = (editor, _monaco) => {
 		// カーソル位置を取得
@@ -36,6 +39,20 @@ export const Editor: React.FC<Props> = ({ initialValue }) => {
 		});
 	};
 
+	const handleChange: OnChange = (value) => {
+		if (value == null || !fieldId) return;
+
+		sendFieldExtensionMessage(
+			{
+				id: fieldId,
+				message: {
+					data: value,
+				},
+			},
+			"*",
+		);
+	};
+
 	return (
 		<div className="grid grid-rows-[auto_1fr_auto] font-mono">
 			<EditorHeader
@@ -48,6 +65,7 @@ export const Editor: React.FC<Props> = ({ initialValue }) => {
 				minimap={minimap}
 				readOnly={initialValue === null}
 				onMount={handleMount}
+				onChange={handleChange}
 			/>
 			<EditorFooter
 				column={position?.column ?? 1}
