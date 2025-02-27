@@ -2,21 +2,17 @@ import { EditorFooter } from "./EditorFooter";
 import { EditorHeader } from "./EditorHeader";
 import { Monaco } from "./Monaco";
 import type { OnChange, OnMount } from "@monaco-editor/react";
-import { sendFieldExtensionMessage } from "microcms-field-extension-api";
 import type { Position } from "monaco-editor";
 import { useState } from "react";
-import { useFieldId } from "~/hooks/useFieldId";
+import { useFieldExtension } from "~/hooks/useFieldExtension";
 
-type Props = {
-	initialValue: string | null;
-};
+export const Editor: React.FC = () => {
+	const [initialValue, { sendValue }] = useFieldExtension();
 
-export const Editor: React.FC<Props> = ({ initialValue }) => {
 	const [minimap, setMinimap] = useState(false);
 	const [position, setPosition] = useState<Position | null>(null);
 	const [selectedLength, setSelectedLength] = useState<number | null>(null);
 	const [content, setContent] = useState<string>("");
-	const fieldId = useFieldId();
 
 	const handleMount: OnMount = (editor, _monaco) => {
 		// カーソル位置を取得
@@ -39,18 +35,11 @@ export const Editor: React.FC<Props> = ({ initialValue }) => {
 		});
 	};
 
+	// 値を microCMS に送信
 	const handleChange: OnChange = (value) => {
-		if (value == null || !fieldId) return;
+		if (value == null) return;
 
-		sendFieldExtensionMessage(
-			{
-				id: fieldId,
-				message: {
-					data: value,
-				},
-			},
-			"*",
-		);
+		sendValue(value);
 	};
 
 	return (

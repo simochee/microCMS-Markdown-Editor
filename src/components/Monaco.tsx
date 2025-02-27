@@ -56,6 +56,7 @@ export const Monaco: React.FC<Props> = ({
 
 	return (
 		<MonacoEditor
+			width="100%"
 			height={700}
 			language="markdown"
 			defaultValue={initialValue}
