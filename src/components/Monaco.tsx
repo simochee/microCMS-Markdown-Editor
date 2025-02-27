@@ -4,11 +4,12 @@ import { getSingletonHighlighter } from "shiki/bundle/web";
 import { useWindowSize } from "~/hooks/useWindowSize";
 
 type Props = {
+	initialValue: string;
 	minimap: boolean;
 	onMount: OnMount;
 };
 
-export const Monaco: React.FC<Props> = ({ minimap, onMount }) => {
+export const Monaco: React.FC<Props> = ({ initialValue, minimap, onMount }) => {
 	const [windowWidth] = useWindowSize();
 
 	const handleMount: OnMount = async (editor, monaco) => {
@@ -40,6 +41,7 @@ export const Monaco: React.FC<Props> = ({ minimap, onMount }) => {
 			width={windowWidth}
 			height={700}
 			language="markdown"
+			defaultValue={initialValue}
 			options={{
 				fontFamily: "IBM Plex Mono",
 				fontSize: 16,

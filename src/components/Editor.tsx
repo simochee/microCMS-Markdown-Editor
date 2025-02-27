@@ -5,7 +5,11 @@ import type { OnMount } from "@monaco-editor/react";
 import type { Position } from "monaco-editor";
 import { useState } from "react";
 
-export const Editor = () => {
+type Props = {
+	initialValue: string;
+};
+
+export const Editor: React.FC<Props> = ({ initialValue }) => {
 	const [minimap, setMinimap] = useState(false);
 	const [position, setPosition] = useState<Position | null>(null);
 	const [selectedLength, setSelectedLength] = useState<number | null>(null);
@@ -35,7 +39,11 @@ export const Editor = () => {
 	return (
 		<div className="grid grid-rows-[auto_1fr_auto] font-mono">
 			<EditorHeader minimap={minimap} onChangeMinimap={setMinimap} />
-			<Monaco minimap={minimap} onMount={handleMount} />
+			<Monaco
+				initialValue={initialValue}
+				minimap={minimap}
+				onMount={handleMount}
+			/>
 			<EditorFooter
 				column={position?.column ?? 1}
 				lineNumber={position?.lineNumber ?? 1}
