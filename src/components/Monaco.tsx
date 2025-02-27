@@ -20,7 +20,6 @@ export const Monaco: React.FC<Props> = ({ minimap }) => {
 		<MonacoEditor
 			height={700}
 			language="markdown"
-			theme="vs"
 			options={{
 				fontFamily: "IBM Plex Mono, IBM Plex Sans JP, monospace",
 				minimap: { enabled: minimap },
