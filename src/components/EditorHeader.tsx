@@ -3,14 +3,20 @@ import {
 	VscMapVertical,
 	VscMapVerticalFilled,
 	VscMenu,
+	VscLoading,
 } from "react-icons/vsc";
 
 type Props = {
+	loading: boolean;
 	minimap: boolean;
 	onChangeMinimap: (minimap: boolean) => void;
 };
 
-export const EditorHeader: React.FC<Props> = ({ minimap, onChangeMinimap }) => {
+export const EditorHeader: React.FC<Props> = ({
+	loading,
+	minimap,
+	onChangeMinimap,
+}) => {
 	const MinimapIcon = minimap ? VscMapVerticalFilled : VscMapVertical;
 
 	return (
@@ -18,6 +24,9 @@ export const EditorHeader: React.FC<Props> = ({ minimap, onChangeMinimap }) => {
 			<p className="text-xs flex items-center h-9 gap-2 pl-4 pr-5 bg-editor-tab-activeBackground border-t border-editor-tab-activeBorderTop text-editor-tab-activeForeground">
 				<VscMarkdown className="text-xl" />
 				article.md
+				{loading && (
+					<VscLoading className="size-4 animate-spin text-editor-tab-inactiveForeground" />
+				)}
 			</p>
 			<nav className="ml-auto flex gap-1">
 				<button

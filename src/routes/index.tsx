@@ -1,15 +1,12 @@
 import "@fontsource/ibm-plex-mono/400.css";
 import { createFileRoute } from "@tanstack/react-router";
 import { Editor } from "~/components/Editor";
-import { getInitialValue } from "~/utils/microcms";
-
-let initialValue: string;
+import { useInitialValue } from "~/hooks/useInitialValue";
 
 export const Route = createFileRoute("/")({
-	loader: async () => {
-		initialValue = await getInitialValue();
-	},
 	component: () => {
+		const initialValue = useInitialValue();
+
 		return (
 			<div>
 				<Editor initialValue={initialValue} />

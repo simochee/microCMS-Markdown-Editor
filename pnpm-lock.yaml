@@ -32,6 +32,9 @@ importers:
       hono:
         specifier: ^4.7.2
         version: 4.7.2
+      microcms-field-extension-api:
+        specifier: ^1.0.0
+        version: 1.0.0
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -1425,6 +1428,9 @@ packages:
 
   mdast-util-to-hast@13.2.0:
     resolution: {integrity: sha512-QGYKEuUsYT9ykKBCMOEDLsU5JRObWQusAolFMeko/tYPufNkRffBAQjIE+99jbA87xv6FgmjLtwjh9wBWajwAA==}
+
+  microcms-field-extension-api@1.0.0:
+    resolution: {integrity: sha512-q2rHTagXGi9ztXiz/cxl2Q/Pu/ezy8qv/pMcrOvSRMbzXRf/HXxTguvN+2XNvxZCLOuMdug5PHCF7GIf7r9apA==}
 
   micromark-util-character@2.1.1:
     resolution: {integrity: sha512-wv8tdUTJ3thSFFFJKtpYKOYiGP2+v96Hvk4Tu8KpCAsTMs6yi+nVmGh1syvSCsaxz45J6Jbw+9DD6g97+NV67Q==}
@@ -3001,6 +3007,8 @@ snapshots:
       unist-util-position: 5.0.0
       unist-util-visit: 5.0.0
       vfile: 6.0.3
+
+  microcms-field-extension-api@1.0.0: {}
 
   micromark-util-character@2.1.1:
     dependencies:

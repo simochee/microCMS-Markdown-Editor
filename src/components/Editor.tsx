@@ -6,7 +6,7 @@ import type { Position } from "monaco-editor";
 import { useState } from "react";
 
 type Props = {
-	initialValue: string;
+	initialValue: string | null;
 };
 
 export const Editor: React.FC<Props> = ({ initialValue }) => {
@@ -38,10 +38,15 @@ export const Editor: React.FC<Props> = ({ initialValue }) => {
 
 	return (
 		<div className="grid grid-rows-[auto_1fr_auto] font-mono">
-			<EditorHeader minimap={minimap} onChangeMinimap={setMinimap} />
-			<Monaco
-				initialValue={initialValue}
+			<EditorHeader
+				loading={initialValue === null}
 				minimap={minimap}
+				onChangeMinimap={setMinimap}
+			/>
+			<Monaco
+				initialValue={initialValue ?? ""}
+				minimap={minimap}
+				readOnly={initialValue === null}
 				onMount={handleMount}
 			/>
 			<EditorFooter

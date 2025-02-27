@@ -1,18 +1,29 @@
 import MonacoEditor, { type OnMount } from "@monaco-editor/react";
 import { shikiToMonaco } from "@shikijs/monaco";
+import type { editor } from "monaco-editor";
+import { useEffect, useRef } from "react";
 import { getSingletonHighlighter } from "shiki/bundle/web";
 import { useWindowSize } from "~/hooks/useWindowSize";
 
 type Props = {
 	initialValue: string;
 	minimap: boolean;
+	readOnly: boolean;
 	onMount: OnMount;
 };
 
-export const Monaco: React.FC<Props> = ({ initialValue, minimap, onMount }) => {
+export const Monaco: React.FC<Props> = ({
+	initialValue,
+	minimap,
+	readOnly,
+	onMount,
+}) => {
 	const [windowWidth] = useWindowSize();
+	const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
 	const handleMount: OnMount = async (editor, monaco) => {
+		editorRef.current = editor;
+
 		const highlighter = await getSingletonHighlighter({
 			themes: ["catppuccin-latte"],
 			langs: [
@@ -36,6 +47,10 @@ export const Monaco: React.FC<Props> = ({ initialValue, minimap, onMount }) => {
 		onMount(editor, monaco);
 	};
 
+	useEffect(() => {
+		editorRef.current?.setValue(initialValue);
+	}, [initialValue]);
+
 	return (
 		<MonacoEditor
 			width={windowWidth}
@@ -43,6 +58,7 @@ export const Monaco: React.FC<Props> = ({ initialValue, minimap, onMount }) => {
 			language="markdown"
 			defaultValue={initialValue}
 			options={{
+				readOnly,
 				fontFamily: "IBM Plex Mono",
 				fontSize: 16,
 				wordWrap: "on",
