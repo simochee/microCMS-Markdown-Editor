@@ -1,19 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useRemark } from "react-remark";
 
 export const Route = createFileRoute("/preview")({
 	component: () => {
-		const [content, setContent] = useState("");
+		const [html, setMarkdownSource] = useRemark();
 
 		useEffect(() => {
 			const handleMessage = (e: MessageEvent) => {
 				if (
 					e.origin !== location.origin ||
 					e.data.action !== "RESPONSE:PREVEW_CONTENT"
-				)
+				) {
 					return;
+				}
 
-				setContent(e.data.content);
+				setMarkdownSource(e.data.content);
 			};
 
 			window.addEventListener("message", handleMessage);
@@ -25,13 +27,8 @@ export const Route = createFileRoute("/preview")({
 			return () => {
 				window.removeEventListener("message", handleMessage);
 			};
-		}, []);
+		}, [setMarkdownSource]);
 
-		return (
-			<div>
-				<p>Preview</p>
-				<pre>{content}</pre>
-			</div>
-		);
+		return <article className="prose max-w-2xl mx-auto py-10">{html}</article>;
 	},
 });
