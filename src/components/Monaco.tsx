@@ -14,7 +14,20 @@ export const Monaco: React.FC<Props> = ({ minimap, onMount }) => {
 	const handleMount: OnMount = async (editor, monaco) => {
 		const highlighter = await getSingletonHighlighter({
 			themes: ["catppuccin-latte"],
-			langs: ["markdown"],
+			langs: [
+				"markdown",
+				"typescript",
+				"tsx",
+				"json",
+				"yaml",
+				"astro",
+				"vue",
+				"html",
+				"css",
+				"sass",
+				"shell",
+				"vue-html",
+			],
 		});
 
 		shikiToMonaco(highlighter, monaco);
@@ -28,7 +41,10 @@ export const Monaco: React.FC<Props> = ({ minimap, onMount }) => {
 			height={700}
 			language="markdown"
 			options={{
-				fontFamily: "IBM Plex Mono, IBM Plex Sans JP, monospace",
+				fontFamily: "IBM Plex Mono",
+				fontSize: 16,
+				wordWrap: "on",
+				language: "markdown",
 				minimap: { enabled: minimap },
 			}}
 			onMount={handleMount}
