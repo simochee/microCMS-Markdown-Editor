@@ -1,22 +1,77 @@
 import "@fontsource/ibm-plex-mono/400.css";
+import type { OnChange, OnMount } from "@monaco-editor/react";
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect } from "react";
+import type { Position } from "monaco-editor";
+import { useEffect, useState } from "react";
 import { useMeasure } from "react-use";
 import { Editor } from "~/components/Editor";
+import { EditorFooter } from "~/components/EditorFooter";
+import { EditorHeader } from "~/components/EditorHeader";
 import { useFieldExtension } from "~/hooks/useFieldExtension";
 
 export const Route = createFileRoute("/")({
 	component: () => {
-		const [, { updateStyle }] = useFieldExtension();
 		const [ref, { height }] = useMeasure<HTMLDivElement>();
+
+		const [initialValue, { sendValue, updateStyle }] = useFieldExtension();
+
+		const [minimap, setMinimap] = useState(false);
+		const [position, setPosition] = useState<Position | null>(null);
+		const [selectedLength, setSelectedLength] = useState<number | null>(null);
+		const [content, setContent] = useState<string>("");
+
+		const handleMount: OnMount = (editor, _monaco) => {
+			// カーソル位置を取得
+			setPosition(editor.getPosition());
+			editor.onDidChangeCursorPosition(({ position }) => {
+				setPosition(position);
+			});
+
+			// 選択範囲を取得
+			editor.onDidChangeCursorSelection(({ selection }) => {
+				const text = editor.getModel()?.getValueInRange(selection) || "";
+
+				setSelectedLength(text.length || null);
+			});
+
+			// 値が変更されたら、文字数と単語数を取得
+			setContent(editor.getModel()?.getValue() || "");
+			editor.onDidChangeModelContent(() => {
+				setContent(editor.getModel()?.getValue() || "");
+			});
+		};
+
+		// 値を microCMS に送信
+		const handleChange: OnChange = (value) => {
+			if (value == null) return;
+
+			sendValue(value);
+		};
 
 		useEffect(() => {
 			updateStyle("100%", height);
 		}, [height, updateStyle]);
 
 		return (
-			<div ref={ref}>
-				<Editor />
+			<div ref={ref} className="grid grid-rows-[auto_1fr_auto] font-mono">
+				<EditorHeader
+					loading={initialValue === null}
+					minimap={minimap}
+					onChangeMinimap={setMinimap}
+				/>
+				<Editor
+					initialValue={initialValue ?? ""}
+					minimap={minimap}
+					readOnly={initialValue === null}
+					onMount={handleMount}
+					onChange={handleChange}
+				/>
+				<EditorFooter
+					column={position?.column ?? 1}
+					lineNumber={position?.lineNumber ?? 1}
+					selectedLength={selectedLength}
+					content={content}
+				/>
 			</div>
 		);
 	},

@@ -1,67 +1,75 @@
-import { EditorFooter } from "./EditorFooter";
-import { EditorHeader } from "./EditorHeader";
-import { Monaco } from "./Monaco";
-import type { OnChange, OnMount } from "@monaco-editor/react";
-import type { Position } from "monaco-editor";
-import { useState } from "react";
-import { useFieldExtension } from "~/hooks/useFieldExtension";
+import MonacoEditor, {
+	type OnChange,
+	type OnMount,
+} from "@monaco-editor/react";
+import { shikiToMonaco } from "@shikijs/monaco";
+import type { editor } from "monaco-editor";
+import { useEffect, useRef } from "react";
+import { getSingletonHighlighter } from "shiki/bundle/web";
 
-export const Editor: React.FC = () => {
-	const [initialValue, { sendValue }] = useFieldExtension();
+type Props = {
+	initialValue: string;
+	minimap: boolean;
+	readOnly: boolean;
+	onMount: OnMount;
+	onChange: OnChange;
+};
 
-	const [minimap, setMinimap] = useState(false);
-	const [position, setPosition] = useState<Position | null>(null);
-	const [selectedLength, setSelectedLength] = useState<number | null>(null);
-	const [content, setContent] = useState<string>("");
+export const Editor: React.FC<Props> = ({
+	initialValue,
+	minimap,
+	readOnly,
+	onMount,
+	onChange,
+}) => {
+	const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
-	const handleMount: OnMount = (editor, _monaco) => {
-		// カーソル位置を取得
-		setPosition(editor.getPosition());
-		editor.onDidChangeCursorPosition(({ position }) => {
-			setPosition(position);
+	const handleMount: OnMount = async (editor, monaco) => {
+		editorRef.current = editor;
+
+		const highlighter = await getSingletonHighlighter({
+			themes: ["catppuccin-latte"],
+			langs: [
+				"markdown",
+				"typescript",
+				"tsx",
+				"json",
+				"yaml",
+				"astro",
+				"vue",
+				"html",
+				"css",
+				"sass",
+				"shell",
+				"vue-html",
+			],
 		});
 
-		// 選択範囲を取得
-		editor.onDidChangeCursorSelection(({ selection }) => {
-			const text = editor.getModel()?.getValueInRange(selection) || "";
+		shikiToMonaco(highlighter, monaco);
 
-			setSelectedLength(text.length || null);
-		});
-
-		// 値が変更されたら、文字数と単語数を取得
-		setContent(editor.getModel()?.getValue() || "");
-		editor.onDidChangeModelContent(() => {
-			setContent(editor.getModel()?.getValue() || "");
-		});
+		onMount(editor, monaco);
 	};
 
-	// 値を microCMS に送信
-	const handleChange: OnChange = (value) => {
-		if (value == null) return;
-
-		sendValue(value);
-	};
+	useEffect(() => {
+		editorRef.current?.setValue(initialValue);
+	}, [initialValue]);
 
 	return (
-		<div className="grid grid-rows-[auto_1fr_auto] font-mono">
-			<EditorHeader
-				loading={initialValue === null}
-				minimap={minimap}
-				onChangeMinimap={setMinimap}
-			/>
-			<Monaco
-				initialValue={initialValue ?? ""}
-				minimap={minimap}
-				readOnly={initialValue === null}
-				onMount={handleMount}
-				onChange={handleChange}
-			/>
-			<EditorFooter
-				column={position?.column ?? 1}
-				lineNumber={position?.lineNumber ?? 1}
-				selectedLength={selectedLength}
-				content={content}
-			/>
-		</div>
+		<MonacoEditor
+			width="100%"
+			height={700}
+			language="markdown"
+			defaultValue={initialValue}
+			options={{
+				readOnly,
+				fontFamily: "IBM Plex Mono",
+				fontSize: 16,
+				wordWrap: "on",
+				language: "markdown",
+				minimap: { enabled: minimap },
+			}}
+			onMount={handleMount}
+			onChange={onChange}
+		/>
 	);
 };
