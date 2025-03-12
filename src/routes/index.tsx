@@ -3,7 +3,7 @@ import type { OnChange, OnMount } from "@monaco-editor/react";
 import { createFileRoute } from "@tanstack/react-router";
 import type { Position } from "monaco-editor";
 import { useEffect, useRef, useState } from "react";
-import { useMeasure } from "react-use";
+import { useMeasure, useWindowSize } from "react-use";
 import { Editor } from "~/components/Editor";
 import { EditorFooter } from "~/components/EditorFooter";
 import { EditorHeader } from "~/components/EditorHeader";
@@ -15,6 +15,7 @@ export const Route = createFileRoute("/")({
 
 		const isFullscreen =
 			new URL(location.href).searchParams.get("fullscreen") != null;
+		const windowSize = useWindowSize();
 
 		const [initialValue, { sendValue, updateStyle }] = useFieldExtension();
 
@@ -87,6 +88,10 @@ export const Route = createFileRoute("/")({
 			<div
 				ref={ref}
 				className="grid grid-rows-[auto_1fr_auto] font-mono h-full"
+				style={{
+					width: isFullscreen ? windowSize.width : "auto",
+					height: isFullscreen ? windowSize.height : "auto",
+				}}
 			>
 				<EditorHeader
 					loading={initialValue === null}
