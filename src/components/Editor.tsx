@@ -59,21 +59,26 @@ export const Editor: React.FC<Props> = ({
 	}, [initialValue]);
 
 	return (
-		<MonacoEditor
-			width={width}
-			height={height}
-			language="markdown"
-			defaultValue={initialValue}
-			options={{
-				readOnly,
-				fontFamily: "IBM Plex Mono",
-				fontSize: 16,
-				wordWrap: "on",
-				language: "markdown",
-				minimap: { enabled: minimap },
-			}}
-			onMount={handleMount}
-			onChange={onChange}
-		/>
+		<>
+			<pre>
+				allow fullscreen: {document.fullscreenEnabled ? "true" : "false"}
+			</pre>
+			<MonacoEditor
+				width={width}
+				height={height}
+				language="markdown"
+				defaultValue={initialValue}
+				options={{
+					readOnly,
+					fontFamily: "IBM Plex Mono",
+					fontSize: 16,
+					wordWrap: "on",
+					language: "markdown",
+					minimap: { enabled: minimap },
+				}}
+				onMount={handleMount}
+				onChange={onChange}
+			/>
+		</>
 	);
 };
