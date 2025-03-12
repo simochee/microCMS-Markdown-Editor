@@ -1,6 +1,6 @@
 import { clsx } from "clsx";
 import type { IconType } from "react-icons";
-import { VscPreview, VscGithub } from "react-icons/vsc";
+import { VscPreview, VscGithub, VscScreenFull } from "react-icons/vsc";
 import { open } from "~/utils/navigation";
 
 type StatusBarItemProps = React.ComponentProps<"button"> & {
@@ -36,6 +36,7 @@ type Props = {
 	selectedLength: number | null;
 	content: string;
 	onPreview: () => void;
+	onFullScreen: () => void;
 };
 
 export const EditorFooter: React.FC<Props> = ({
@@ -44,6 +45,7 @@ export const EditorFooter: React.FC<Props> = ({
 	selectedLength,
 	content,
 	onPreview,
+	onFullScreen,
 }) => {
 	return (
 		<footer className="bg-editor-commandCenter-background">
@@ -52,6 +54,7 @@ export const EditorFooter: React.FC<Props> = ({
 					<StatusBarItem icon={VscPreview} accent onClick={onPreview}>
 						記事をプレビュー
 					</StatusBarItem>
+					<StatusBarItem icon={VscScreenFull} onClick={onFullScreen} />
 				</nav>
 				<nav className="flex gap-2">
 					<StatusBarItem>

@@ -3,15 +3,18 @@ import type { OnChange, OnMount } from "@monaco-editor/react";
 import { createFileRoute } from "@tanstack/react-router";
 import type { Position } from "monaco-editor";
 import { useEffect, useRef, useState } from "react";
-import { useMeasure } from "react-use";
+import { useMeasure, useWindowSize } from "react-use";
 import { Editor } from "~/components/Editor";
 import { EditorFooter } from "~/components/EditorFooter";
 import { EditorHeader } from "~/components/EditorHeader";
 import { useFieldExtension } from "~/hooks/useFieldExtension";
+import { useFullscreen } from "~/hooks/useFullscreen";
 
 export const Route = createFileRoute("/")({
 	component: () => {
+		const { height: windowHeight } = useWindowSize();
 		const [ref, { height }] = useMeasure<HTMLDivElement>();
+		const [isFullscreen, toggleFullscreen] = useFullscreen();
 
 		const [initialValue, { sendValue, updateStyle }] = useFieldExtension();
 
@@ -81,7 +84,13 @@ export const Route = createFileRoute("/")({
 		}, [height, updateStyle]);
 
 		return (
-			<div ref={ref} className="grid grid-rows-[auto_1fr_auto] font-mono">
+			<div
+				ref={ref}
+				className="grid grid-rows-[auto_1fr_auto] font-mono"
+				style={{
+					height: isFullscreen ? windowHeight : "auto",
+				}}
+			>
 				<EditorHeader
 					loading={initialValue === null}
 					minimap={minimap}
@@ -91,6 +100,7 @@ export const Route = createFileRoute("/")({
 					initialValue={initialValue ?? ""}
 					minimap={minimap}
 					readOnly={initialValue === null}
+					height={isFullscreen ? "100%" : 700}
 					onMount={handleMount}
 					onChange={handleChange}
 				/>
@@ -100,6 +110,7 @@ export const Route = createFileRoute("/")({
 					selectedLength={selectedLength}
 					content={content}
 					onPreview={handlePreview}
+					onFullScreen={toggleFullscreen}
 				/>
 			</div>
 		);

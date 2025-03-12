@@ -5,12 +5,14 @@ import MonacoEditor, {
 import { shikiToMonaco } from "@shikijs/monaco";
 import type { editor } from "monaco-editor";
 import { useEffect, useRef } from "react";
+import { useWindowSize } from "react-use";
 import { getSingletonHighlighter } from "shiki/bundle/web";
 
 type Props = {
 	initialValue: string;
 	minimap: boolean;
 	readOnly: boolean;
+	height: number | string;
 	onMount: OnMount;
 	onChange: OnChange;
 };
@@ -19,9 +21,11 @@ export const Editor: React.FC<Props> = ({
 	initialValue,
 	minimap,
 	readOnly,
+	height,
 	onMount,
 	onChange,
 }) => {
+	const { width } = useWindowSize();
 	const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
 	const handleMount: OnMount = async (editor, monaco) => {
@@ -56,8 +60,8 @@ export const Editor: React.FC<Props> = ({
 
 	return (
 		<MonacoEditor
-			width="100%"
-			height={700}
+			width={width}
+			height={height}
 			language="markdown"
 			defaultValue={initialValue}
 			options={{
