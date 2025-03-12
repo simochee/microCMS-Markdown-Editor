@@ -10,6 +10,7 @@ import { getSingletonHighlighter } from "shiki/bundle/web";
 type Props = {
 	initialValue: string;
 	minimap: boolean;
+	lineNumbers: boolean;
 	readOnly: boolean;
 	width: number | string;
 	height: number | string;
@@ -20,6 +21,7 @@ type Props = {
 export const Editor: React.FC<Props> = ({
 	initialValue,
 	minimap,
+	lineNumbers,
 	readOnly,
 	width,
 	height,
@@ -70,6 +72,7 @@ export const Editor: React.FC<Props> = ({
 				fontSize: 16,
 				wordWrap: "on",
 				language: "markdown",
+				lineNumbers: lineNumbers ? "on" : "off",
 				minimap: { enabled: minimap },
 			}}
 			onMount={handleMount}

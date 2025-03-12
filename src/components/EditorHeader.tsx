@@ -4,6 +4,7 @@ import {
 	VscMapVerticalFilled,
 	VscMenu,
 	VscLoading,
+	VscListSelection,
 } from "react-icons/vsc";
 
 type Props = {
